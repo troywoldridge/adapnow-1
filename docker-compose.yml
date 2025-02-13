@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: laravel_backend
+    restart: unless-stopped
+    ports:
+      - "8000:80"         # Maps port 80 in container to 8000 on host (for internal testing)
+    volumes:
+      - ./backend:/var/www/html  # Optional: mount your code for development
+    environment:
+      - APP_ENV=production
+      - APP_URL=https://www.adapnow.com
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nextjs_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"       # Maps port 3000 in container to 3000 on host
+    volumes:
+      - ./frontend:/app   # Optional: mount your code for development
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Elizabeth71676!
+      MYSQL_DATABASE: adapnow_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Elizabeth71676!
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:alpine
+    container_name: redis_cache
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql_data:
