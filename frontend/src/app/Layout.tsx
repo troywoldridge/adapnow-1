@@ -14,14 +14,21 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, title, description }) => {
   return (
     <>
-      {/* SEO Component for Meta Tags */}
+      {/* Use the SEO component with props */}
       <SEO
         title={title || "AdapNow E-Commerce"}
         description={
           description ||
           "Explore AdapNow's extensive collection of high-quality print products. Enhance your brand with custom prints, fast shipping, and affordable pricing."
         }
-        // Optionally add other SEO props here, such as keywords, image, etc.
+        keywords="e-commerce, print products, business cards, postcards, banners, AdapNow"
+        author="AdapNow"
+        canonicalUrl="https://www.adapnow.com"
+        ogTitle="AdapNow E-Commerce"
+        ogDescription="Your go-to destination for top-quality print products. Explore our range of business cards, postcards, and more."
+        ogImage="/og-image.jpg"
+        ogUrl="https://www.adapnow.com"
+        twitterCard="summary_large_image"
       />
 
       {/* Wrapper for Header, Content, and Footer */}
