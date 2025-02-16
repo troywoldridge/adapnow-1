@@ -18,11 +18,7 @@ export default function FeaturedCategories() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((cat) => (
             <Link key={cat.label} href={cat.href}>
-              {/* 
-                Always wrap <Link> children in <a> for Next.js.
-                Use next/image (Image component) for optimized images.
-              */}
-              <a className="border rounded overflow-hidden hover:shadow-md transition-shadow">
+              <div className="border rounded overflow-hidden hover:shadow-md transition-shadow">
                 <Image
                   src={cat.img}
                   alt={cat.label}
@@ -33,7 +29,7 @@ export default function FeaturedCategories() {
                 <div className="p-4">
                   <h3 className="font-bold">{cat.label}</h3>
                 </div>
-              </a>
+              </div>
             </Link>
           ))}
         </div>

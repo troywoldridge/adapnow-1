@@ -1,6 +1,7 @@
 // components/HeroSection.tsx
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -11,12 +12,11 @@ export default function HeroSection() {
           <p className="text-lg text-gray-700 mb-4">
             Your one-stop shop for premium print products and e-commerce solutions.
           </p>
-          <a
-            href="#featured"
-            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-          >
-            Shop Now
-          </a>
+          <Link href="#featured">
+            <span className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer">
+              Shop Now
+            </span>
+          </Link>
         </div>
         <div className="flex-1">
           <Image src="/hero-banner.png" alt="Hero Banner" width={500} height={300} className="w-full h-auto" />

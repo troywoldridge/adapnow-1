@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import algoliasearch from "algoliasearch/lite";
 import { InstantSearch, SearchBox } from "react-instantsearch";
-import { Highlight } from "react-instantsearch-hooks-web";
-import { Configure, useHits } from "react-instantsearch-hooks-web";
+import { Highlight } from "react-instantsearch";
+import { Configure, useHits } from "react-instantsearch";
 import { FaFacebookF, FaTwitter, FaInstagram, FaUser, FaShoppingCart, FaTruck } from "react-icons/fa";
 
 // Algolia Credentials
@@ -61,9 +61,9 @@ export default function Header() {
         {hits.map((hit) => (
           <li key={hit.objectID} className="p-2 border-b border-gray-100">
             <Link href={`/product/${hit.objectID}`}>
-              <a>
+              <span>
                 <CustomHighlight hit={hit} attribute="name" />
-              </a>
+              </span>
             </Link>
           </li>
         ))}
@@ -74,7 +74,7 @@ export default function Header() {
   return (
     <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
       <Link href="/">
-        <a className="text-xl font-bold">AdapNow</a>
+        <span className="text-xl font-bold">AdapNow</span>
       </Link>
       
       <InstantSearch searchClient={searchClient} indexName="your_index_name">
@@ -94,25 +94,26 @@ export default function Header() {
       </InstantSearch>
       
       <nav className="flex gap-4">
-        <a href="#" aria-label="Facebook">
-          <FaFacebookF />
-        </a>
-        <a href="#" aria-label="Twitter">
-          <FaTwitter />
-        </a>
-        <a href="#" aria-label="Instagram">
-          <FaInstagram />
-        </a>
-        <a href="#" aria-label="User Account">
-          <FaUser />
-        </a>
-        <a href="#" aria-label="Shopping Cart">
-          <FaShoppingCart />
-        </a>
-        <a href="#" aria-label="Shipping Information">
-          <FaTruck />
-        </a>
-      </nav>
+  <Link href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+    <span><FaFacebookF /></span>
+  </Link>
+  <Link href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+    <span><FaTwitter /></span>
+  </Link>
+  <Link href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+    <span><FaInstagram /></span>
+  </Link>
+  <Link href="/user-account" aria-label="User Account">
+    <span><FaUser /></span>
+  </Link>
+  <Link href="/cart" aria-label="Shopping Cart">
+    <span><FaShoppingCart /></span>
+  </Link>
+  <Link href="/shipping-info" aria-label="Shipping Information">
+    <span><FaTruck /></span>
+  </Link>
+</nav>
+
     </header>
   );
 }

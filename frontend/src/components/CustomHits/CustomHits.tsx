@@ -27,9 +27,9 @@ function CustomHitsBase({ hits, sendEvent }: any) {
                   query: { id: hit.objectID, qid: hit.__queryID },
                 }}
               >
-                <a style={{ color: "blue", textDecoration: "underline" }}>
+                <span style={{ color: "blue", textDecoration: "underline" }}>
                   View Product
-                </a>
+                </span>
               </Link>
   
               <button
