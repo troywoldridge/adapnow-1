@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "@/components/Layout/Navbar";
-import Footer from "@/components/Layout/Footer";
-import NavbarCategories from "@/components/Layout/NavbarCategories";
+import Navbar from "@/components/Navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
+import NavbarCategories from "@/components/Navbar/NavbarCategories";
 import SidebarMenu from "@/components/Layout/SidebarMenu";
 import SEO from "@/components/Layout/SEO";
 

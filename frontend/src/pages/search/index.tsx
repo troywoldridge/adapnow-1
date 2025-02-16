@@ -8,10 +8,10 @@ import {
 import Image from 'next/image';
 
 // Import the CustomHits component
-import CustomHits from "@/components/CustomHits";
+import { CustomHits } from "@/components/CustomHits/CustomHits";
 
 // Algolia credentials
-const searchClient = algoliasearch("YourApplicationID", "YourSearchOnlyAPIKey");
+const searchClient = algoliasearch("12N0JD5MJD", "198c6e8c46b1332bc153a07585c84872");
 
 export default function SearchPage() {
   return (

@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Link from "next/link";
+import { connectHits } from "react-instantsearch-dom";
 
 /**
  * The 'sendEvent' function is automatically provided by React InstantSearch
  * in the 'InfiniteHits' or 'Hits' widget. We'll need to override the default
  * item template to capture custom events (click, conversion).
  */
-export function CustomHitsBase({ hits, sendEvent }: any) {
+function CustomHitsBase({ hits, sendEvent }: any) {
     return (
       <div style={{ display: "grid", gap: "1rem" }}>
         {hits.map((hit: any) => {  // ✅ Removed "index" since it's not used
@@ -74,4 +75,9 @@ export function CustomHitsBase({ hits, sendEvent }: any) {
       </div>
     );
   }
-  
+
+// ✅ Wrap with connectHits to make it a proper Algolia Hits component
+const CustomHits = connectHits(CustomHitsBase);
+
+// ✅ Export correctly
+export { CustomHits };
