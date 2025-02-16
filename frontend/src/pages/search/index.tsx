@@ -21,7 +21,7 @@ export default function SearchPage() {
       <InstantSearch
         searchClient={searchClient}
         indexName="YourIndexName"
-         insights={true} // Enable event tracking
+         // insights={true} // Enable event tracking
       >
         {/* Configure the number of results per page */}
         <Configure hitsPerPage={8} />

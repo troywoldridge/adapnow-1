@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // pages/product/[id].tsx
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -16,20 +17,20 @@ export default function ProductDetail() {
   // we could do something like:
   const handleAddToCart = () => {
     if (typeof window !== "undefined") {
-      window.aa("addedToCartObjectIDsAfterSearch", {
-        eventName: "Product Added to Cart (Detail Page)",
-        index: "YourIndexName",
-        queryID: qid, // pass the queryID from the search
-        objectIDs: [id],
-        objectData: [
-          {
-            price: 19.99,
-            discount: 3.99,
-            quantity: 1,
-          },
-        ],
-        currency: "USD",
-      });
+      (window as any).aa("addedToCartObjectIDsAfterSearch", {
+              eventName: "Product Added to Cart (Detail Page)",
+              index: "YourIndexName",
+              queryID: qid, // pass the queryID from the search
+              objectIDs: [typeof id === "string" ? id : ""],
+              objectData: [
+                {
+                  price: 19.99,
+                  discount: 3.99,
+                  quantity: 1,
+                },
+              ],
+              currency: "USD",
+            });
       alert("Added to cart from product detail!");
     }
   };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // pages/checkout.tsx
 import React from "react";
 
@@ -7,7 +8,7 @@ export default function Checkout() {
     // you'll want to store them in localStorage or your global state
     // so you can pass them here.
     if (typeof window !== "undefined") {
-      window.aa("purchasedObjectIDsAfterSearch", {
+      (window as any).aa("purchasedObjectIDsAfterSearch", {
         eventName: "Order Completed",
         index: "YourIndexName",
         objectIDs: ["objectID-1", "objectID-2"],

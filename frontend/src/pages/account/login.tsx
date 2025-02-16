@@ -1,6 +1,12 @@
 // For example in pages/account/login.tsx
 import React from "react";
 
+declare global {
+  interface Window {
+    aa: (command: string, token: string) => void;
+  }
+}
+
 export default function Login() {
   const handleLogin = () => {
     // Suppose we do some auth checks here, then get user ID
