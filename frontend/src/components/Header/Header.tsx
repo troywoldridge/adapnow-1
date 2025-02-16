@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import algoliasearch from "algoliasearch/lite";
+import { algoliasearch } from "algoliasearch/lite";
+
 import {
   InstantSearch,
   SearchBox,
