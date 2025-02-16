@@ -1,9 +1,9 @@
 import React from "react";
-import Navbar from "/Navbar";
-import Footer from "./Footer";
-import NavbarCategories from "./NavbarCategories";
-import SidebarMenu from "./SidebarMenu";
-import SEO from "./SEO";
+import Navbar from "@/components/Layout/Navbar";
+import Footer from "@/components/Layout/Footer";
+import NavbarCategories from "@/components/Layout/NavbarCategories";
+import SidebarMenu from "@/components/Layout/SidebarMenu";
+import SEO from "@/components/Layout/SEO";
 
 interface LayoutProps {
   children: React.ReactNode;
