@@ -1,33 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { algoliasearch } from "algoliasearch/lite";
-
-import {
-  InstantSearch,
-  SearchBox,
-  Configure,
-  connectStateResults,
-  connectHits,
-  connectHighlight,
-} from "react-instantsearch-dom";
+import algoliasearch from "algoliasearch/lite";
+import { InstantSearch, SearchBox } from "react-instantsearch";
+import { Highlight } from "react-instantsearch-hooks-web";
+import { Configure, useHits } from "react-instantsearch-hooks-web";
 import { FaFacebookF, FaTwitter, FaInstagram, FaUser, FaShoppingCart, FaTruck } from "react-icons/fa";
 
 // Algolia Credentials
-const searchClient = algoliasearch("YourApplicationID", "YourSearchOnlyAPIKey");
+const searchClient = algoliasearch("12N0JD5MJD", "198c6e8c46b1332bc153a07585c84872");
 
 // Local Storage key for recent searches
 const RECENT_SEARCHES_KEY = "adapnow_recent_searches";
 
 export default function Header() {
-  const router = useRouter(); // ✅ Correctly inside the function component
+  const router = useRouter();
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   useEffect(() => {
     // Load recent searches from local storage
-    const storedSearches = JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY) || "[]");
-    setRecentSearches(storedSearches);
+    const storedSearches = localStorage.getItem(RECENT_SEARCHES_KEY);
+    if (storedSearches) {
+      setRecentSearches(JSON.parse(storedSearches));
+    }
   }, []);
 
   /**
@@ -46,96 +41,78 @@ export default function Header() {
   };
 
   /**
-   * Custom highlight for search results
+   * Custom Highlight component for search results
    */
-  const CustomHighlight = connectHighlight(({ highlight, attribute, hit, className }: any) => {
-    const parsedHit = highlight({
-      highlightProperty: "_highlightResult",
-      attribute,
-      hit,
-    });
-
+  const CustomHighlight = ({ hit, attribute }: { hit: { objectID: string; name?: string; __position: number }; attribute: string }) => {
     return (
-      <span className={className}>
-        {parsedHit.map((part: any, index: number) =>
-          part.isHighlighted ? (
-            <mark key={index} className="bg-yellow-200">{part.value}</mark>
-          ) : (
-            <span key={index}>{part.value}</span>
-          )
-        )}
-      </span>
+      <Highlight hit={hit} attribute={attribute as keyof typeof hit} classNames={{
+        highlighted: 'bg-yellow-200'
+      }} />
     );
-  });
+  };
 
   /**
    * Custom Hits component for search results
    */
-  const CustomHits = connectHits(({ hits }: { hits: any[] }) => (
-    <ul className="bg-white border border-gray-200 rounded-lg shadow-md max-h-60 overflow-y-auto">
-      {hits.map((hit) => (
-        <li key={hit.objectID} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-          <CustomHighlight attribute="name" hit={hit} />
-        </li>
-      ))}
-    </ul>
-  ));
-
-  /**
-   * Custom "No results" message
-   */
-  const CustomStateResults = connectStateResults(({ searchResults, searching }: any) => {
-    if (searching) return <div className="p-4 text-gray-500">Loading search results...</div>;
-    if (!searchResults || searchResults.nbHits === 0) return <div className="p-4 text-gray-700">No results found.</div>;
-    return null;
-  });
+  const CustomHits = () => {
+    const { hits } = useHits();
+    return (
+      <ul className="bg-white border border-gray-200 rounded-lg shadow-md max-h-60 overflow-y-auto">
+        {hits.map((hit) => (
+          <li key={hit.objectID} className="p-2 border-b border-gray-100">
+            <Link href={`/product/${hit.objectID}`}>
+              <a>
+                <CustomHighlight hit={hit} attribute="name" />
+              </a>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   return (
-    <header className="bg-gray-100 p-4 shadow-md">
-      {/* Top bar with social links and user/cart */}
-      <div className="flex justify-between items-center mb-2">
-        <div className="flex space-x-4">
-          <a href="#" className="text-gray-600 hover:text-gray-900"><FaFacebookF /></a>
-          <a href="#" className="text-gray-600 hover:text-gray-900"><FaTwitter /></a>
-          <a href="#" className="text-gray-600 hover:text-gray-900"><FaInstagram /></a>
-        </div>
-        <div className="flex space-x-4">
-          <Link href="/account"><FaUser className="text-gray-600 hover:text-gray-900" /></Link>
-          <Link href="/cart"><FaShoppingCart className="text-gray-600 hover:text-gray-900" /></Link>
-        </div>
-      </div>
-
-      {/* Search Section */}
-      <div className="flex items-center space-x-4">
-        <InstantSearch searchClient={searchClient} indexName="YourIndexName">
-          <Configure hitsPerPage={5} />
-
-          <form onSubmit={handleSearchSubmit} className="flex-1">
-            <SearchBox />
-          </form>
-
+    <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
+      <Link href="/">
+        <a className="text-xl font-bold">AdapNow</a>
+      </Link>
+      
+      <InstantSearch searchClient={searchClient} indexName="your_index_name">
+        <Configure hitsPerPage={5} />
+        <form onSubmit={handleSearchSubmit} className="relative">
+          <SearchBox
+            className="p-2 rounded border"
+            placeholder="Search..."
+          />
+          <style jsx>{`
+            .ais-SearchBox-submit {
+              display: none;
+            }
+          `}</style>
           <CustomHits />
-          <CustomStateResults />
-        </InstantSearch>
-      </div>
-
-      {/* Recent Searches */}
-      {recentSearches.length > 0 && (
-        <div className="mt-2 text-sm text-gray-600">
-          <span className="font-bold">Recent:</span>{" "}
-          {recentSearches.map((search, index) => (
-            <button key={index} className="underline mx-1" onClick={() => router.push(`/search?q=${search}`)}>
-              {search}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Shipping Info */}
-      <div className="mt-2 flex items-center text-gray-700">
-        <FaTruck className="mr-2" />
-        <span>Free shipping on orders over $50!</span>
-      </div>
+        </form>
+      </InstantSearch>
+      
+      <nav className="flex gap-4">
+        <a href="#" aria-label="Facebook">
+          <FaFacebookF />
+        </a>
+        <a href="#" aria-label="Twitter">
+          <FaTwitter />
+        </a>
+        <a href="#" aria-label="Instagram">
+          <FaInstagram />
+        </a>
+        <a href="#" aria-label="User Account">
+          <FaUser />
+        </a>
+        <a href="#" aria-label="Shopping Cart">
+          <FaShoppingCart />
+        </a>
+        <a href="#" aria-label="Shipping Information">
+          <FaTruck />
+        </a>
+      </nav>
     </header>
   );
 }
