@@ -252,3 +252,41 @@ a:hover {
   padding: 1rem;
   margin-top: 2rem;
 }
+
+.hits-dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+  }
+  
+  .searchbox:focus + .hits-dropdown,
+  .hits-dropdown:hover {
+    display: block;
+  }
+    .hits-dropdown ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .hits-dropdown li {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .hits-dropdown li:hover {
+        background-color: #f0f0f0;
+    }
+    .hits-dropdown li.selected {
+        background-color: #0070f3;
+        color: white;
+    }
+    .hits-dropdown li.selected:hover {
+        background-color: #005bb5;
+    }
+    .hits-dropdown li.selected a {
+        color: white;
+    }
+      

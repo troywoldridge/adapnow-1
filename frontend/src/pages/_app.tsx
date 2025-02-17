@@ -1,7 +1,7 @@
-// pages/_app.tsx
+
 import type { AppProps } from "next/app";
 import React, { useEffect } from "react";
-import "../styles/globals.css";
+import "@/styles/globals.css";
 
 
 // Optional: Example theme or state providers

@@ -2,6 +2,8 @@ import React from "react";
 import algoliasearch from "algoliasearch/lite";
 import { InstantSearch, SearchBox, Configure } from "react-instantsearch-dom";
 import Image from 'next/image';
+import { useRef, useEffect, useState } from "react";
+
 
 // Import the CustomHits component
 import { CustomHits } from "@/components/CustomHits/CustomHits";
@@ -25,31 +27,33 @@ index
   });
 
 export default function SearchPage() {
+  const searchRef = useRef<HTMLDivElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div style={{ padding: 20 }}>
+    <div ref={searchRef} style={{ padding: 20 }}>
       <h1>Search Our Products</h1>
       
-      <InstantSearch
-        searchClient={searchClient}
-        indexName="products"
-      >
-        {/* Configure the number of results per page */}
+      <InstantSearch searchClient={searchClient} indexName="products">
         <Configure hitsPerPage={8} />
-
-        {/* Flex container for search bar and Algolia logo */}
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <SearchBox />
-          
-          <Image
-            src="/algolia-logos/Algolia Logo Pack 2022/SVG/Algolia-logo-blue.svg"
-            alt="Powered by Algolia"
-            height={30} // Adjust height as needed
-            width={100} // Adjust width as needed
-          />
+          <SearchBox onFocus={() => setIsDropdownOpen(true)} />
+          <Image src="/algolia-logo.svg" alt="Powered by Algolia" height={30} width={100} />
         </div>
-
-        {/* Custom hits component with search results */}
-        <CustomHits />
+        {isDropdownOpen && <CustomHits />}
       </InstantSearch>
     </div>
   );

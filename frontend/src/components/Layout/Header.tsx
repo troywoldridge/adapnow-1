@@ -14,6 +14,8 @@ const searchClient = algoliasearch("12N0JD5MJD", "198c6e8c46b1332bc153a07585c848
 const RECENT_SEARCHES_KEY = "adapnow_recent_searches";
 
 export default function Header() {
+
+
   const router = useRouter();
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
@@ -56,10 +58,12 @@ export default function Header() {
    */
   const CustomHits = () => {
     const { hits } = useHits();
+    if (!hits.length) return null; // Hide dropdown if there are no results
+  
     return (
-      <ul className="bg-white border border-gray-200 rounded-lg shadow-md max-h-60 overflow-y-auto">
+      <ul className="bg-white border border-gray-200 rounded-lg shadow-md max-h-60 overflow-y-auto absolute w-full z-50">
         {hits.map((hit) => (
-          <li key={hit.objectID} className="p-2 border-b border-gray-100">
+          <li key={hit.objectID} className="p-2 border-b border-gray-100 hover:bg-gray-100">
             <Link href={`/product/${hit.objectID}`}>
               <span>
                 <CustomHighlight hit={hit} attribute="name" />
@@ -70,7 +74,23 @@ export default function Header() {
       </ul>
     );
   };
+  
 
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (event.target instanceof Node && !document.getElementById('search-container')?.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   return (
     <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
       <Link href="/">
@@ -79,18 +99,17 @@ export default function Header() {
       
       <InstantSearch searchClient={searchClient} indexName="products">
         <Configure hitsPerPage={5} />
-        <form onSubmit={handleSearchSubmit} className="relative">
-          <SearchBox
-            className="p-2 rounded border"
-            placeholder="Search..."
-          />
-          <style jsx>{`
-            .ais-SearchBox-submit {
-              display: none;
-            }
-          `}</style>
-          <CustomHits />
-        </form>
+        <div id="search-container">
+  <form onSubmit={handleSearchSubmit} className="relative">
+    <SearchBox
+      className="p-2 rounded border"
+      placeholder="Search..."
+      onFocus={() => setIsDropdownOpen(true)}
+    />
+    {isDropdownOpen && <CustomHits />}
+  </form>
+</div>
+
       </InstantSearch>
       
       <nav className="flex gap-4">

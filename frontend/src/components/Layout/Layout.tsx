@@ -3,7 +3,6 @@ import Header from "@/components/Layout/Header";
 import NavbarCategories from "@/components/Layout/NavbarCategories";
 import SidebarMenu from "@/components/Layout/SidebarMenu";
 import Footer from "@/components/Layout/Footer";
-import SEO from "@/components/Layout/SEO";
 
 interface LayoutProps {
   children: React.ReactNode;

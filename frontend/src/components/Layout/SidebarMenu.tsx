@@ -1,10 +1,7 @@
+// components/Layout/SidebarMenu.tsx
 import React from "react";
 import Link from "next/link";
 
-/**
- * Simple array of main product categories.
- * Each category has a label and a link to a landing page.
- */
 const categories = [
   { label: "Business Cards", href: "/categories/business-cards" },
   { label: "Print Products", href: "/categories/print-products" },
@@ -17,17 +14,13 @@ const categories = [
 
 const SidebarMenu: React.FC = () => {
   return (
-    <nav className="flex flex-col space-y-2">
+    <nav className="flex flex-col space-y-1">
       {categories.map((cat, index) => (
-        <Link key={index} href={cat.href}>
-          {/* You can style this button any way you like */}
-          <button
-            type="button"
-            className="w-full text-left bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
-          >
-            {cat.label}
-          </button>
-        </Link>
+      <Link key={index} href={cat.href}>
+        <div className="block w-full text-gray-800 p-2 rounded hover:bg-gray-100 transition-colors">
+        {cat.label}
+        </div>
+      </Link>
       ))}
     </nav>
   );

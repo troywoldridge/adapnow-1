@@ -1,3 +1,4 @@
+// components/Layout/Footer.tsx
 import React from "react";
 import Link from "next/link";
 
@@ -21,38 +22,28 @@ const Footer: React.FC = () => {
             <h3 className="font-bold text-white mb-2">Quick Links</h3>
             <ul className="space-y-1 text-sm">
               <li>
-                <Link href="/about">
-                  <span className="hover:text-white cursor-pointer">
-                    About Us
-                  </span>
+                <Link href="/about" className="hover:text-white">
+                  About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact">
-                  <span className="hover:text-white cursor-pointer">
-                    Contact
-                  </span>
+                <Link href="/contact" className="hover:text-white">
+                  Contact
                 </Link>
               </li>
               <li>
-                <Link href="/faqs">
-                  <span className="hover:text-white cursor-pointer">
-                    FAQs
-                  </span>
+                <Link href="/faqs" className="hover:text-white">
+                  FAQs
                 </Link>
               </li>
               <li>
-                <Link href="/privacy-policy">
-                  <span className="hover:text-white cursor-pointer">
-                    Privacy Policy
-                  </span>
+                <Link href="/privacy-policy" className="hover:text-white">
+                  Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms-of-service">
-                  <span className="hover:text-white cursor-pointer">
-                    Terms of Service
-                  </span>
+                <Link href="/terms-of-service" className="hover:text-white">
+                  Terms of Service
                 </Link>
               </li>
             </ul>
@@ -63,24 +54,18 @@ const Footer: React.FC = () => {
             <h3 className="font-bold text-white mb-2">Customer Service</h3>
             <ul className="space-y-1 text-sm">
               <li>
-                <Link href="/shipping">
-                  <span className="hover:text-white cursor-pointer">
-                    Shipping &amp; Returns
-                  </span>
+                <Link href="/shipping" className="hover:text-white">
+                  Shipping &amp; Returns
                 </Link>
               </li>
               <li>
-                <Link href="/support">
-                  <span className="hover:text-white cursor-pointer">
-                    Support Center
-                  </span>
+                <Link href="/support" className="hover:text-white">
+                  Support Center
                 </Link>
               </li>
               <li>
-                <Link href="/order-tracking">
-                  <span className="hover:text-white cursor-pointer">
-                    Order Tracking
-                  </span>
+                <Link href="/order-tracking" className="hover:text-white">
+                  Order Tracking
                 </Link>
               </li>
             </ul>
@@ -118,11 +103,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-// This code defines a Footer component for an e-commerce website using React and Tailwind CSS.
-// The footer includes sections for "About AdapNow," "Quick Links," "Customer Service," and a newsletter subscription form.
-// Each section contains relevant links and information.
-// The footer is styled with a dark background and light text, and it is responsive for different screen sizes.
-// The component is exported for use in other parts of the application.
-// The footer also includes a copyright notice that dynamically displays the current year.
-// The component is designed to be reusable and can be easily integrated into a larger layout.
-// The footer is designed to be visually appealing and user-friendly, providing essential information and links to enhance the user experience.
+
