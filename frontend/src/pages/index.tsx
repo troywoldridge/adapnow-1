@@ -1,6 +1,3 @@
-
-// frontend/src/pages/index.tsx
-
 import React from "react";
 import Layout from "@/components/Layout/Layout";
 import SEO from "@/components/Layout/SEO";
@@ -8,6 +5,11 @@ import SidebarMenu from "@/components/Layout/SidebarMenu";
 import HeroSection from "@/components/HeroSection";
 import FeaturedCategories from "@/components/FeaturedCategories";
 import NewsletterSignup from "@/components/NewsletterSignup";
+
+// If you have these components, uncomment and use them:
+import Header from "@/components/Header/Header";
+import NavbarCategories from "@/components/Navbar/NavbarCategories";
+// import Footer from "@/components/Layout/Footer";
 
 export default function HomePage() {
   return (
@@ -19,38 +21,38 @@ export default function HomePage() {
         keywords="ecommerce, printing, business cards, stationery"
       />
 
-      {/* Top-level Header */}
-     {/* <Header /> */}
-
-      {/* Optional Navigation Bars */}
-     {/* <Navbar />*/}
-      {/*/<NavbarCategories />*/}
-
-      {/* Layout that might provide a container or styling */}
+      {/* Wrap everything in Layout if it provides global structure */}
       <Layout>
-        {/* Example layout with a sidebar + main content */}
-        <div className="flex">
-          {/* Sidebar for categories or navigation */}
-          <aside className="hidden md:block w-64 p-4 bg-gray-50">
+        {/* 
+          1) Single Header (top bar with brand, search, user icons) 
+             If your Layout does NOT already include a header, use <Header /> here.
+        */}
+        <Header />
+
+        {/* 
+          2) Single Navbar for categories (below the header). 
+             If your Layout does NOT already include a navbar, use <NavbarCategories /> here.
+        */}
+        <NavbarCategories />
+
+        {/* 3) Main layout: sidebar + main content in a flex container */}
+        <div className="container mx-auto flex gap-4 px-4 py-4">
+          {/* Sidebar on the left */}
+          <aside className="hidden md:block w-64 bg-white border border-gray-200 p-4">
             <SidebarMenu />
           </aside>
 
           {/* Main content area */}
-          <main className="flex-grow p-4">
-            {/* Hero Banner */}
+          <main className="flex-grow bg-white border border-gray-200 p-4">
             <HeroSection />
-
-            {/* Featured Categories */}
             <FeaturedCategories />
-
-            {/* Newsletter Signup */}
             <NewsletterSignup />
           </main>
         </div>
-      </Layout>
 
-      {/* Footer at the bottom */}
-      <Footer />
+        {/* 4) Single Footer (if you have one) */}
+        {/* <Footer /> */}
+      </Layout>
     </>
   );
 }

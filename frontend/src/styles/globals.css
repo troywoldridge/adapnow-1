@@ -1,9 +1,15 @@
 /* 
-  1) Basic reset & box-sizing
-  2) Red → Blue animated background
-  3) Centering classes & default typography
-  4) Tailwind imports
-  5) Additional fade animations
+  =========================================
+  GLOBALS.CSS – High-End E-Commerce Layout
+  =========================================
+
+  1) Basic Reset & Box-Sizing
+  2) Tailwind Base Imports
+  3) Root Variables & Global Typography
+  4) Header & Navbar
+  5) Main Layout (Sidebar + Hero)
+  6) Buttons, Inputs & Links
+  7) Animations & Keyframes
 */
 
 /* 1) Basic Reset & Box-Sizing */
@@ -15,7 +21,28 @@
   box-sizing: border-box;
 }
 
-/* 2) HTML & Body */
+/* 2) Tailwind Base Imports */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* 3) Root Variables & Global Typography */
+:root {
+  /* Brand Colors */
+  --brand-color: #0070f3;    /* Vibrant Blue */
+  --accent-color: #ff5151;   /* Vibrant Red */
+  --text-color: #333;
+  --heading-color: #222;
+
+  /* Grays & Borders */
+  --border-color: #ccc;
+  --navbar-bg: #fff;
+  --sidebar-bg: #fff;
+
+  /* Transition Speed */
+  --transition-speed: 0.3s;
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;
@@ -24,130 +51,204 @@ html {
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-
-  /* Bold red → blue gradient background */
-  background: linear-gradient(-45deg, #ff0000, #001aff, #ff0000, #001aff);
-  background-size: 400% 400%;
-  animation: gradientBG 12s ease infinite;
-
-  min-height: 100vh;
-  color: #333;
+  color: var(--text-color);
   line-height: 1.5;
+
+  /* Subtle gradient background */
+  background: linear-gradient(120deg, #f5f7fa 0%, #ffffff 100%);
+  min-height: 100vh;
 }
 
-/* Animate the background gradient */
-@keyframes gradientBG {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Headings: Crisp, bold, with margin */
+/* Headings */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  margin: 1rem 0;
-  color: #222;
+  margin-bottom: 0.75rem;
+  color: var(--heading-color);
 }
 
-/* Links: Subtle transition on hover */
-a {
-  text-decoration: none;
-  color: #0070f3;
-  transition: color 0.3s ease;
-}
-a:hover {
-  color: #ff0080;
+/* Container Utility */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
-/* Buttons: Vibrant gradient & scale effect on hover */
+/* 4) Header & Navbar */
+
+/* Top header bar */
+.header {
+  background-color: var(--brand-color);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+}
+
+.header .logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.header-search input {
+  width: 300px;
+  max-width: 100%;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem;
+  outline: none;
+}
+
+.header-search input:focus {
+  outline: 2px solid #fff;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Navbar for categories/links */
+.navbarCategories {
+  background-color: var(--navbar-bg);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.navbarCategories a {
+  color: var(--text-color);
+  font-weight: 500;
+  margin-right: 1.5rem;
+  transition: color var(--transition-speed) ease;
+}
+.navbarCategories a:last-child {
+  margin-right: 0;
+}
+.navbarCategories a:hover {
+  color: var(--brand-color);
+}
+
+/* 5) Main Layout (Sidebar + Hero) */
+
+/* Main container for sidebar + hero in a row */
+.main-layout {
+  display: flex;
+  gap: 1rem; /* Space between sidebar and hero */
+}
+
+/* Sidebar */
+.sideBarMenu {
+  background-color: var(--sidebar-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 1rem;
+  width: 250px;
+  flex-shrink: 0; /* Don’t shrink below 250px */
+}
+
+.sideBarMenu ul {
+  list-style: none;
+}
+
+.sideBarMenu li {
+  margin-bottom: 0.5rem;
+}
+
+.sideBarMenu a {
+  display: block;
+  color: var(--text-color);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.sideBarMenu a:hover {
+  background-color: #f0f0f0;
+  color: var(--brand-color);
+}
+
+/* Hero / Main Content */
+.hero {
+  flex: 1; /* Take remaining space */
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 2rem;
+  min-height: 300px;
+}
+
+/* 6) Buttons, Inputs & Links */
+
+/* Gradient button */
 button,
 .btn {
-  background: linear-gradient(45deg, #ff5151 0%, #0000ff 100%);
+  background: linear-gradient(45deg, var(--accent-color), var(--brand-color));
   color: #fff;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
-  transition: transform 0.3s ease, background 0.4s ease;
+  transition: transform var(--transition-speed) ease, background 0.4s ease;
 }
+
 button:hover,
 .btn:hover {
   transform: scale(1.05);
-  background: linear-gradient(45deg, #0000ff 0%, #ff5151 100%);
+  background: linear-gradient(45deg, var(--brand-color), var(--accent-color));
 }
 
-/* Inputs & Textareas: Subtle border & focus outline */
-input,
-textarea,
-select {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0.5rem;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.3s ease;
+/* General Links */
+a {
+  text-decoration: none;
+  color: var(--brand-color);
+  transition: color var(--transition-speed) ease;
 }
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #0070f3;
+a:hover {
+  color: var(--accent-color);
 }
 
-/* 3) Centering .container Class & Utility Classes */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;      /* centers content horizontally */
-  padding: 1rem;
+/* 7) Animations & Keyframes */
+
+/* Fade In (from below) */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-in-out forwards;
 }
 
-/* Common utility classes */
-.text-center {
+/* Fade In Left */
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-fadeInLeft {
+  animation: fadeInLeft 0.6s ease-in-out forwards;
+}
+
+/* Footer styling (optional) */
+.footer {
   text-align: center;
-}
-.mt-2 { margin-top: 0.5rem; }
-.mt-4 { margin-top: 1rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-4 { margin-bottom: 1rem; }
-
-/* 4) Tailwind Base Imports (If you're using Tailwind) */
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-/* 5) Additional Fade Animations */
-@layer utilities {
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.6s ease-in-out forwards;
-  }
-
-  @keyframes fadeInLeft {
-    0% {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  .animate-fadeInLeft {
-    animation: fadeInLeft 0.6s ease-in-out forwards;
-  }
+  font-size: 0.9rem;
+  color: #666;
+  padding: 1rem;
+  margin-top: 2rem;
 }
