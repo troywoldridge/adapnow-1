@@ -5,10 +5,6 @@ import React from "react";
 import Layout from "@/components/Layout/Layout";
 import SEO from "@/components/Layout/SEO";
 import SidebarMenu from "@/components/Layout/SidebarMenu";
-import Navbar from "@/components/Navbar/Navbar";
-import NavbarCategories from "@/components/Navbar/NavbarCategories";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
 import HeroSection from "@/components/HeroSection";
 import FeaturedCategories from "@/components/FeaturedCategories";
 import NewsletterSignup from "@/components/NewsletterSignup";
@@ -24,11 +20,11 @@ export default function HomePage() {
       />
 
       {/* Top-level Header */}
-      <Header />
+     {/* <Header /> */}
 
       {/* Optional Navigation Bars */}
-      <Navbar />
-      <NavbarCategories />
+     {/* <Navbar />*/}
+      {/*/<NavbarCategories />*/}
 
       {/* Layout that might provide a container or styling */}
       <Layout>

@@ -1,0 +1,153 @@
+/* 
+  1) Basic reset & box-sizing
+  2) Red → Blue animated background
+  3) Centering classes & default typography
+  4) Tailwind imports
+  5) Additional fade animations
+*/
+
+/* 1) Basic Reset & Box-Sizing */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 2) HTML & Body */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+  /* Bold red → blue gradient background */
+  background: linear-gradient(-45deg, #ff0000, #001aff, #ff0000, #001aff);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+
+  min-height: 100vh;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Animate the background gradient */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Headings: Crisp, bold, with margin */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin: 1rem 0;
+  color: #222;
+}
+
+/* Links: Subtle transition on hover */
+a {
+  text-decoration: none;
+  color: #0070f3;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #ff0080;
+}
+
+/* Buttons: Vibrant gradient & scale effect on hover */
+button,
+.btn {
+  background: linear-gradient(45deg, #ff5151 0%, #0000ff 100%);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.3s ease, background 0.4s ease;
+}
+button:hover,
+.btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #0000ff 0%, #ff5151 100%);
+}
+
+/* Inputs & Textareas: Subtle border & focus outline */
+input,
+textarea,
+select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #0070f3;
+}
+
+/* 3) Centering .container Class & Utility Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;      /* centers content horizontally */
+  padding: 1rem;
+}
+
+/* Common utility classes */
+.text-center {
+  text-align: center;
+}
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+
+/* 4) Tailwind Base Imports (If you're using Tailwind) */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* 5) Additional Fade Animations */
+@layer utilities {
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease-in-out forwards;
+  }
+
+  @keyframes fadeInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  .animate-fadeInLeft {
+    animation: fadeInLeft 0.6s ease-in-out forwards;
+  }
+}

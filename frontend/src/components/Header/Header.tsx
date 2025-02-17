@@ -77,7 +77,7 @@ export default function Header() {
         <span className="text-xl font-bold">AdapNow</span>
       </Link>
       
-      <InstantSearch searchClient={searchClient} indexName="your_index_name">
+      <InstantSearch searchClient={searchClient} indexName="products">
         <Configure hitsPerPage={5} />
         <form onSubmit={handleSearchSubmit} className="relative">
           <SearchBox

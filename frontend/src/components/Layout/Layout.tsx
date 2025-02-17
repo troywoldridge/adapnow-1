@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
 import NavbarCategories from "@/components/Navbar/NavbarCategories";
 import SidebarMenu from "@/components/Layout/SidebarMenu";
 import SEO from "@/components/Layout/SEO";
+import Footer from "@/components/Footer/Footer";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,7 +15,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, title, description }) => {
   return (
     <>
-      {/* Use the SEO component with props */}
+      {/* Dynamic SEO for each page */}
       <SEO
         title={title || "AdapNow E-Commerce"}
         description={
@@ -31,24 +32,27 @@ const Layout: React.FC<LayoutProps> = ({ children, title, description }) => {
         twitterCard="summary_large_image"
       />
 
-      {/* Wrapper for Header, Content, and Footer */}
-      <div className="flex flex-col min-h-screen bg-gray-50 text-gray-800">
-        <header>
-          {/* Main Navigation */}
-          <Navbar />
-          {/* Dropdown Categories Navigation */}
-          <NavbarCategories />
+      {/* Full-page container for layout */}
+      <div className="flex flex-col min-h-screen">
+
+        {/* Header Section with Blue->Purple Gradient */}
+        <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 shadow-md transition-colors duration-300 hover:from-blue-700 hover:to-purple-700">
+          {/* Center container for navbar items */}
+          <div className="max-w-screen-xl mx-auto">
+            <Navbar />
+            <NavbarCategories />
+          </div>
         </header>
 
-        {/* Main Content Area */}
+        {/* Main Content Area (pushes footer to bottom) */}
         <div className="flex-grow">
-          <div className="flex">
-            {/* Sidebar for Filters or Subcategories */}
+          <div className="flex max-w-screen-xl mx-auto w-full">
+            {/* Sidebar on large screens */}
             <aside className="hidden lg:block lg:w-1/4 xl:w-1/5 bg-white shadow-md p-4">
               <SidebarMenu />
             </aside>
 
-            {/* Content Section */}
+            {/* Main Page Content */}
             <main className="flex-grow bg-white p-6 md:p-8 lg:p-10">
               {children}
             </main>
@@ -56,10 +60,36 @@ const Layout: React.FC<LayoutProps> = ({ children, title, description }) => {
         </div>
 
         {/* Footer Section */}
-        <Footer />
+        <footer className="mt-8 bg-gray-900 text-white">
+          <Footer />
+        </footer>
       </div>
     </>
   );
 };
 
 export default Layout;
+
+// Add CSS for fade-in animations
+// Add this to your global CSS file (e.g., styles/globals.css)
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+//
+// @layer utilities {
+//   @keyframes fadeIn {
+//     0% {
+//       opacity: 0;
+//     }
+//     100% {
+      opacity: 1;
+//     }
+//   }
+//
+//   .animate-fadeIn {
+//     animation: fadeIn 0.5s ease-in-out;
+//   }
+//
+//   .animate-fadeInLeft {
+//     animation: fadeIn 0.5s ease-in-out;
+//     animation-delay: 0.2s;     
