@@ -10,22 +10,22 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* HEADER (top bar) */}
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* HEADER */}
       <Header />
 
-      {/* NAVBAR (horizontal categories below header) */}
+      {/* NAVBAR */}
       <NavbarCategories />
 
-      {/* MAIN CONTENT WRAPPER (sidebar + main area) */}
-      <div className="flex flex-grow max-w-screen-xl mx-auto w-full">
-        {/* SIDEBAR (visible on large screens) */}
-        <aside className="hidden lg:block lg:w-1/4 xl:w-1/5 bg-white shadow p-4">
+      {/* MAIN CONTENT WRAPPER */}
+      <div className="flex flex-grow w-full px-6 py-6">
+        {/* SIDEBAR (Desktop Only) */}
+        <div className="hidden lg:block lg:w-1/4 pr-6">
           <SidebarMenu />
-        </aside>
+        </div>
 
-        {/* MAIN CONTENT (the rest of the space) */}
-        <main className="flex-grow bg-white p-4 md:p-6 lg:p-8">
+        {/* MAIN CONTENT AREA without box styling */}
+        <main className="flex-grow">
           {children}
         </main>
       </div>
@@ -37,3 +37,4 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 };
 
 export default Layout;
+
