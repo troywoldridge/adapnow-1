@@ -20,6 +20,47 @@ interface OptionGroup {
   options: { id: number; name: string }[];
 }
 
+
+// Fetch all available product IDs for static paths generation
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/products`);
+  const text = await res.text();
+  console.log(text); // Log the raw response to check if it's valid JSON or HTML
+  const products = JSON.parse(text);
+
+  const paths = products.map((product: { id: number }) => ({
+    params: { id: product.id.toString() },
+  }));
+
+  return { paths, fallback: false };
+};
+
+// Fetch the product data for each individual page at build time
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/products/${params?.id}`
+  );
+  // Check if the response is valid JSON
+  const text = await res.text();
+  console.log(text); // Log the raw response here as well
+  const product = JSON.parse(text);
+
+  // Fetch options and other related data
+  const optionsRes = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}v1/products/${params?.id}/options`
+  );
+  const optionsText = await optionsRes.text();
+  console.log(optionsText); // Log the options response
+  const optionGroups = JSON.parse(optionsText);
+
+  await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/products/${params?.id}/pricing`
+  );
+
+  return { props: { product, optionGroups, pricing } };
+};
+
+
 // ---------------------
 //  COMPONENT
 // ---------------------
