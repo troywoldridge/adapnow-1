@@ -21,6 +21,7 @@ use App\Http\Controllers\API\v1\RecommendationController;
 use App\Http\Controllers\API\v1\GamificationController;
 use App\Http\Controllers\API\v1\CouponController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\PriceController;
 
 // Test Routes
 Route::get('/test', function () {
@@ -44,6 +45,7 @@ Route::prefix('v1')->group(function () {
 
     // Products
     Route::prefix('products')->group(function () {
+        Route::get('/product/{id}', [ProductController::class, 'show']);
         Route::get('/', [ProductController::class, 'index']);
         Route::get('/featured', [ProductController::class, 'getFeaturedProducts']);
         Route::get('/trending', [ProductController::class, 'getTrendingProducts']);
@@ -122,5 +124,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/apply', [CouponController::class, 'applyCoupon']);
     });
    Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+   Route::post('/calculate_price', [PriceController::class, 'calculate']);
 });
 

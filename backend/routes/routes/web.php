@@ -5,6 +5,8 @@
 //use Illuminate\Support\Facades\Redis;
 //use App\Http\Controllers\SinaliteController;
 
+
+
 // Define the homepage route
 //Route::get('/', function () {
   //  return view('welcome');
