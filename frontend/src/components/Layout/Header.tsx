@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import algoliasearch from "algoliasearch/lite";
 import { InstantSearch, SearchBox, Configure, useHits } from "react-instantsearch";
 import { Highlight } from "react-instantsearch";
@@ -31,18 +33,6 @@ export default function Header() {
     }
   }, []);
 
-  // Handle search submission
-  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const query = event.currentTarget.search.value.trim();
-
-    // Update recent searches
-    const updatedSearches = [query, ...recentSearches.filter((s) => s !== query)].slice(0, 5);
-    setRecentSearches(updatedSearches);
-    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updatedSearches));
-
-    router.push(`/search?q=${query}`);
-  };
 
   // Custom highlight for search results
   const CustomHighlight = ({
@@ -118,7 +108,6 @@ export default function Header() {
         <Configure hitsPerPage={5} />
         {/* Center the search bar and make it bigger */}
         <div id="search-container" className="relative flex-1 flex justify-center mx-4">
-          <form onSubmit={handleSearchSubmit} className="relative w-full max-w-lg">
             <SearchBox
               className="
                 w-full p-2 rounded text-black
@@ -129,7 +118,6 @@ export default function Header() {
               onFocus={() => setIsDropdownOpen(true)}
             />
             {isDropdownOpen && <CustomHits />}
-          </form>
         </div>
       </InstantSearch>
 

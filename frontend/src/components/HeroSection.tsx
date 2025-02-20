@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,7 +25,7 @@ const slides: Slide[] = [
     text: "Discover premium business cards, flyers, and more.",
     buttonText: "Browse Catalog",
     buttonLink: "/print-products",
-    image: "/images/apparel.jpeg", // example image
+    image: "/images/apparel.jpeg",
   },
   {
     title: "Large Format Printing",
@@ -51,11 +53,11 @@ const slides: Slide[] = [
 export default function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Auto-rotate slides every 3 seconds
+  // Auto-rotate slides every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000); // 3 seconds
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -68,19 +70,20 @@ export default function HeroCarousel() {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`
-              absolute top-0 left-0 w-full h-full flex items-center transition-opacity duration-700
-              ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0"}
-            `}
+            className={`absolute top-0 left-0 w-full h-full flex items-center transition-opacity duration-700 ${
+              index === currentSlide
+                ? "opacity-100 z-10"
+                : "opacity-0 pointer-events-none z-0"
+            }`}
           >
-            {/* Text Section */}
+            {/* Text Section (hidden on mobile) */}
             <div className="flex-1 hidden md:flex flex-col justify-center">
               <h1 className="text-lg font-bold">{slide.title}</h1>
               <p className="text-md">{slide.text}</p>
               <Link href={slide.buttonLink}>
-               <span className="bg-blue-600 text-white py-1 px-2 rounded hover:bg-blue-700 cursor-pointer text-xs mt-4 inline-block">
-                {slide.buttonText}
-               </span>
+                <span className="bg-blue-600 text-white py-1 px-2 rounded hover:bg-blue-700 cursor-pointer text-xs mt-4 inline-block">
+                  {slide.buttonText}
+                </span>
               </Link>
             </div>
 
@@ -93,10 +96,9 @@ export default function HeroCarousel() {
                 height={150}
                 className="object-contain"
                 style={{ maxHeight: "1000px", maxWidth: "200%" }}
-                priority  // Load the image immediately
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Responsive sizes
-                loading="eager"  // Load the image immediately
-                               
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                loading="eager"
               />
             </div>
           </div>

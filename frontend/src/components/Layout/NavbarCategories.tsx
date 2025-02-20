@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 
 /** Sublink interface */
@@ -20,11 +22,29 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ name, href, sublinks }) => 
   // This state toggles the top-level dropdown
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // Ref to store the close-timer so we can clear it if needed
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // On mouse enter, clear any pending timer and open immediately
+  const handleMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    setIsDropdownOpen(true);
+  };
+
+  // On mouse leave, wait 300ms before closing
+  const handleMouseLeave = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 300);
+  };
+
   return (
     <div
-      className="relative" 
-      onMouseEnter={() => setIsDropdownOpen(true)}
-      onMouseLeave={() => setIsDropdownOpen(false)}
+      className="relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Top-level link or button */}
       {href ? (
