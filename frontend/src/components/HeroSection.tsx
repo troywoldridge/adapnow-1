@@ -63,25 +63,25 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative overflow-hidden bg-gray-200"
-      style={{ height: "150px" }} // Adjust height as needed
+      className="mt-16 mb-16 bg- gray rounded-xl overflow-hidden"
+      style={{ height: "250px" }} // Adjust height as needed
     >
-      <div className="relative max-w-screen-xl mx-auto px-4 h-[150px]">
+      <div className="relative max-w-screen-xl mx-auto px-4 py-24 bg-slate-200 rounded-xl shadow-gray-500">
         {slides.map((slide, index) => (
           <div
             key={index}
             className={`absolute top-0 left-0 w-full h-full flex items-center transition-opacity duration-700 ${
               index === currentSlide
-                ? "opacity-100 z-10"
+                ? "opacity-100 z-0"
                 : "opacity-0 pointer-events-none z-0"
             }`}
           >
             {/* Text Section (hidden on mobile) */}
-            <div className="flex-1 hidden md:flex flex-col justify-center">
+            <div className="flex-1 hidden md:flex flex-col justify-center px-16">
               <h1 className="text-lg font-bold">{slide.title}</h1>
               <p className="text-md">{slide.text}</p>
               <Link href={slide.buttonLink}>
-                <span className="bg-blue-600 text-white py-1 px-2 rounded hover:bg-blue-700 cursor-pointer text-xs mt-4 inline-block">
+                <span className="bg-blue-600 text-white py-2 px-8 rounded hover:bg-blue-700 cursor-pointer text-xs mt-4 inline-block">
                   {slide.buttonText}
                 </span>
               </Link>
@@ -93,9 +93,9 @@ export default function HeroCarousel() {
                 src={slide.image}
                 alt={slide.title}
                 width={200}
-                height={150}
+                height={100}
                 className="object-contain"
-                style={{ maxHeight: "1000px", maxWidth: "200%" }}
+                style={{ maxHeight: "500px", maxWidth: "200%" }}
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 loading="eager"

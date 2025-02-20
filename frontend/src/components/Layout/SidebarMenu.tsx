@@ -13,13 +13,14 @@ const categories = [
 
 const SidebarMenu: React.FC = () => {
   return (
-    <div className="w-full lg:w-64">
+    // Add top and left padding here
+    <div className="w-full lg:w-64 pt-16 pl-8">
       <nav className="flex flex-col space-y-4">
         {categories.map((cat, index) => (
           <Link key={index} href={cat.href}>
             <button
               className="
-                w-full text-left 
+                w-full    
                 bg-gradient-to-r from-blue-600 to-purple-600 
                 text-white font-semibold p-3 rounded 
                 hover:from-blue-700 hover:to-purple-700 

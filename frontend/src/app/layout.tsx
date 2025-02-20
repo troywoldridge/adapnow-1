@@ -1,18 +1,15 @@
-// app/layout.tsx (Server Component by default)
+// app/layout.tsx
 
-import React from 'react';
-import Header from '@/components/Layout/Header';
-import Footer from '@/components/Layout/Footer';
-import NavbarCategories from '@/components/Layout/NavbarCategories';
-import SidebarMenu from '@/components/Layout/SidebarMenu';
-import '@/styles/globals.css';
-
-// If you have a special SEO component, see note below. 
-// import SEO from '@/components/Layout/SEO';
+import React from "react";
+import Header from "@/components/Layout/Header";
+import Footer from "@/components/Layout/Footer";
+import NavbarCategories from "@/components/Layout/NavbarCategories";
+import SidebarMenu from "@/components/Layout/SidebarMenu";
+import "@/styles/globals.css"; // Tailwind or other global CSS
 
 export const metadata = {
-  title: 'My App',
-  description: 'A Next.js 13 App Router site',
+  title: "AMerican Design And Printing",
+  description: "Your one-stop shop for premium print products and e-commerce solutions.",
 };
 
 export default function RootLayout({
@@ -23,21 +20,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* Header / Navbar */}
+        {/* Top Header + Nav */}
         <Header />
         <NavbarCategories />
-        <SidebarMenu />
 
-        {/* Main content (child routes) */}
-        {children}
+        
+        {/* Layout: Sidebar on the left, main content on the right */}
+        <div className="flex">
+          <SidebarMenu />
+          <main className="flex-1">{children}</main>
+        </div>
 
-        {/* Footer */}
+        {/* Footer at bottom */}
         <Footer />
       </body>
     </html>
   );
 }
-// The constructor function is not needed in this context as it is not a class component.
-// If you need to initialize some parameters or state, you can do it inside the RootLayout function or use React hooks.
+
 
 

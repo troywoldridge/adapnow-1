@@ -874,7 +874,7 @@ const categories: CategoryItemProps[] = [
 /** Renders the navbar horizontally across the top */
 const NavbarCategories: React.FC = () => {
   return (
-    <nav className="bg-gradient-to-r from-blue-600 to-purple-600 text-white flex items-center justify-center space-x-4 py-2">
+    <nav className="relative z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white flex items-center justify-center space-x-4 py-2">
       {categories.map((cat, idx) => (
         <CategoryItem
           key={idx}

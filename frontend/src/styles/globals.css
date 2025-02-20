@@ -112,6 +112,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Navbar for categories/links */
 .navbarCategories {
+  z-index: 9999;
+  position: relative;
   background-color: var(--navbar-bg);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -145,8 +147,8 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--sidebar-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  padding: 1rem;
-  width: 250px;
+  padding: 4rem;
+  width: 100px; /* Fixed width */
   flex-shrink: 0; /* Don’t shrink below 250px */
 }
 
@@ -161,8 +163,8 @@ h1, h2, h3, h4, h5, h6 {
 .sideBarMenu a {
   display: block;
   color: var(--text-color);
-  padding: 0.5rem 0.75rem;
-  border-radius: 4px;
+  padding: 1.5rem 0.75rem;
+  border-radius: 8px;
   transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
