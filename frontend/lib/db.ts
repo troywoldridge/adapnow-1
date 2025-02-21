@@ -11,7 +11,7 @@ const pool: Pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || '',
-  database: process.env.DB_NAME || 'my_database',
+  database: process.env.DB_NAME || 'adapnow_db',
   waitForConnections: true,
   connectionLimit: 10, // Adjust as needed
   queueLimit: 0,

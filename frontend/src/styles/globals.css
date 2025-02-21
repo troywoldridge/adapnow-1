@@ -91,28 +91,11 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.5px;
 }
 
-.header-search input {
-  width: 300px;
-  max-width: 100%;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem;
-  outline: none;
-}
 
-.header-search input:focus {
-  outline: 2px solid #fff;
-}
-
-.header-user {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
 
 /* Navbar for categories/links */
 .navbarCategories {
-  z-index: 9999;
+  z-index: 100;
   position: relative;
   background-color: var(--navbar-bg);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -264,30 +247,4 @@ a:hover {
     display: none;
   }
   
-  .searchbox:focus + .hits-dropdown,
-  .hits-dropdown:hover {
-    display: block;
-  }
-    .hits-dropdown ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    .hits-dropdown li {
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .hits-dropdown li:hover {
-        background-color: #f0f0f0;
-    }
-    .hits-dropdown li.selected {
-        background-color: #0070f3;
-        color: white;
-    }
-    .hits-dropdown li.selected:hover {
-        background-color: #005bb5;
-    }
-    .hits-dropdown li.selected a {
-        color: white;
-    }
+ 

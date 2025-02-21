@@ -1,51 +1,57 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+// app/api/products/[id]/price/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import mysql from "mysql2/promise";
 
-// Example: /api/products/123/price
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method Not Allowed' });
-  }
+export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+  const productId = Number(params.id);
+  const body = await request.json(); // { size: '12x12', quantity: '100', etc. }
 
-  const { id } = req.query; // product ID from URL
-  const chosenOptions = req.body; // e.g. { size: '3.5 x 2', qty: '500', Coating: 'Uncoated' }
-
-  try {
-    // 1. Build a hash from chosen options
-    //    Sort keys for consistency
-    const hash = buildHash(chosenOptions);
-
-    // 2. Look up price in product_pricing by product_id + hash
-    let finalPrice = await findPriceByHash(Number(id), hash);
-
-    // 3. If not found, do fallback or custom logic
-    if (finalPrice === null) {
-      // Fallback to product base price or do a custom calculation
-      finalPrice = 0.0;
-    }
-
-    return res.json({ success: true, price: finalPrice });
-  } catch (error) {
-    console.error('Error in price API:', error);
-    return res.status(500).json({ success: false, message: 'Internal Server Error' });
-  }
+  // 1) Load base product or do custom logic
+  const price = await calculatePrice(productId, body);
+  
+  return NextResponse.json({
+    success: true,
+    price,
+  });
 }
 
-// Helper to build a stable hash from chosen options
-function buildHash(options: Record<string, string>): string {
-  const sortedKeys = Object.keys(options).sort();
-  const pairs = sortedKeys.map((key) => `${key}=${options[key]}`);
-  return pairs.join('|'); // e.g. "Coating=Uncoated|qty=500|size=3.5 x 2"
-}
+async function calculatePrice(productId: number, selectedOptions: Record<string, string>) {
+  // Example logic: load base product price, then add surcharges
+  // or do a db lookup for that exact combination, etc.
+  
+  const pool = await mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+  });
 
-// Pseudo-DB function to find a price
-async function findPriceByHash(productId: number, hash: string): Promise<number | null> {
-  // e.g. SELECT final_price FROM product_pricing WHERE product_id=? AND hash=?
-  // If found, return the final_price. Otherwise, return null.
-  // This is just an example returning a random number for illustration.
-  const mockData: Record<string, number> = {
-    'Coating=Uncoated|qty=50|size=3.5 x 2': 15.99,
-    'Coating=Uncoated|qty=100|size=3.5 x 2': 25.99,
-    // ...
-  };
-  return mockData[hash] ?? null;
+  // e.g. get base product
+  const [rows] = await pool.execute<any[]>(
+    `SELECT base_price FROM products WHERE id=? LIMIT 1`,
+    [productId]
+  );
+  if (!rows.length) {
+    return 0;
+  }
+
+  let final = parseFloat(rows[0].base_price);
+
+  // If user selected a certain finishing or size, you can add to final
+  if (selectedOptions.finishing === "4 Grommets Corners") {
+    final += 2.0;
+  }
+  if (selectedOptions.size === "36x48") {
+    final += 10.0;
+  }
+  // etc...
+
+  // Also factor in quantity if needed
+  const qty = parseInt(selectedOptions.quantity || "1", 10);
+  final *= qty;
+
+  return final;
 }

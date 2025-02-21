@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import algoliasearch from "algoliasearch/lite";
-import { InstantSearch, SearchBox, Configure, useHits } from "react-instantsearch";
-import { Highlight } from "react-instantsearch";
+import {
+  InstantSearch,
+  Configure,
+  useSearchBox
+} from "react-instantsearch-hooks-web";
+import Image from "next/image";
 import {
   FaFacebookF,
   FaTwitter,
@@ -15,131 +19,125 @@ import {
   FaTruck,
 } from "react-icons/fa";
 
-// Algolia Credentials
+/** 
+ * 1) Create an Algolia search client 
+ */
 const searchClient = algoliasearch("12N0JD5MJD", "198c6e8c46b1332bc153a07585c84872");
 
-// Local Storage key for recent searches
-const RECENT_SEARCHES_KEY = "adapnow_recent_searches";
-
-export default function Header() {
+/** 
+ * 2) A small custom SearchBox component
+ *    - Uses the useSearchBox() hook for query/refine
+ *    - On Enter (submit), navigates to /search
+ */
+function HeaderSearchBox() {
+  const { query, refine } = useSearchBox();
   const router = useRouter();
 
-  // Load recent searches from localStorage
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  useEffect(() => {
-    const storedSearches = localStorage.getItem(RECENT_SEARCHES_KEY);
-    if (storedSearches) {
-      setRecentSearches(JSON.parse(storedSearches));
+  // If user presses Enter, go to /search
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (query.trim().length > 0) {
+      router.push("/search");
     }
-  }, []);
+  };
 
-
-  // Custom highlight for search results
-  const CustomHighlight = ({
-    hit,
-    attribute,
-  }: {
-    hit: { objectID: string; name?: string; __position: number };
-    attribute: string;
-  }) => {
-    return (
-      <Highlight
-        hit={hit}
-        attribute={attribute as keyof typeof hit}
-        classNames={{
-          highlighted: "bg-yellow-200",
-        }}
+  return (
+    <form onSubmit={handleSubmit} className="relative flex items-center">
+      <input
+        className="w-full p-2 rounded text-black placeholder-gray-600 focus:outline-none border"
+        type="search"
+        value={query}
+        onChange={(e) => refine(e.target.value)}
+        placeholder="Quick search..."
       />
-    );
-  };
+      {/* Algolia logo to the right of the box */}
+      <div className="ml-2 flex items-center">
+        <Image
+          src="/images/Algolia-logo-blue.svg"
+          alt="Powered by Algolia"
+          width={80}
+          height={50}
+        />
+      </div>
+    </form>
+  );
+}
 
-  // CustomHits to display search suggestions
-  const CustomHits = () => {
-    const { hits } = useHits();
-    if (!hits.length) return null; // Hide dropdown if no results
+/** 
+ * 3) The main Header component 
+ */
+export default function Header() {
+  const [isReady, setIsReady] = useState(false);
 
-    return (
-      <ul className="bg-white border border-gray-200 rounded-lg shadow-md max-h-60 overflow-y-auto absolute w-full z-50 mt-1">
-        {hits.map((hit) => (
-          <li key={hit.objectID} className="p-2 border-b border-gray-100 hover:bg-gray-100">
-            <Link href={`/product/${hit.objectID}`}>
-              <span>
-                <CustomHighlight hit={hit} attribute="name" />
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    );
-  };
-
-  // Dropdown control
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // If using localStorage or other client-only features, ensure hydration
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        event.target instanceof Node &&
-        !document.getElementById("search-container")?.contains(event.target)
-      ) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    setIsReady(true);
   }, []);
 
   return (
-    <header
-      className="
-        w-full bg-gradient-to-r from-blue-600 to-purple-600 
-        text-white font-semibold p-2 flex items-center
-        hover:from-blue-700 hover:to-purple-700 transition-colors
-      "
-    >
-      {/* LOGO / BRAND */}
-      <Link href="/">
-        <span className="text-xl font-bold cursor-pointer ml-2">AdapNow</span>
-      </Link>
+    <header className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold p-2 flex items-center justify-between">
+      {/* Left: Logo / Brand */}
+      <div className="flex items-center">
+        <Link href="/">
+          <span className="text-xl font-bold cursor-pointer ml-2">AdapNow</span>
+        </Link>
+      </div>
 
-      {/* SEARCH SECTION */}
-      <InstantSearch searchClient={searchClient} indexName="products">
-        <Configure hitsPerPage={5} />
-        {/* Center the search bar and make it bigger */}
-        <div id="search-container" className="relative flex-1 flex justify-center mx-4">
-            <SearchBox
-              className="
-                w-full p-2 rounded text-black
-                focus:outline-none 
-                placeholder-gray-600
-              "
-              placeholder="Search..."
-              onFocus={() => setIsDropdownOpen(true)}
-            />
-            {isDropdownOpen && <CustomHits />}
-        </div>
-      </InstantSearch>
+      {/** Center: Quick search with InstantSearch */}
+      {isReady && (
+        <InstantSearch searchClient={searchClient} indexName="products">
+          <Configure hitsPerPage={5} />
+          <div className="mx-4 w-full max-w-md">
+            <HeaderSearchBox />
+          </div>
+        </InstantSearch>
+      )}
 
-      {/* ICONS / NAV */}
+      {/* Right: Social / User / Cart icons + link to full search page */}
       <nav className="flex items-center gap-3 text-lg mr-2">
-        <Link href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+        <Link
+          href="https://facebook.com"
+          aria-label="Facebook"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <FaFacebookF className="cursor-pointer hover:text-gray-200" />
         </Link>
-        <Link href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+        <Link
+          href="https://twitter.com"
+          aria-label="Twitter"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <FaTwitter className="cursor-pointer hover:text-gray-200" />
         </Link>
-        <Link href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-          <FaInstagram className="cursor-pointer hover:text-gray-200" />
+        <Link
+          href="https://instagram.com"
+          aria-label="Instagram"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="cursor-pointer hover:text-gray-200">
+            <FaInstagram />
+          </span>
         </Link>
         <Link href="/user-account" aria-label="User Account">
-          <FaUser className="cursor-pointer hover:text-gray-200" />
+          <span className="cursor-pointer hover:text-gray-200">
+            <FaUser />
+          </span>
         </Link>
         <Link href="/cart" aria-label="Shopping Cart">
           <FaShoppingCart className="cursor-pointer hover:text-gray-200" />
         </Link>
         <Link href="/shipping-info" aria-label="Shipping Information">
-          <FaTruck className="cursor-pointer hover:text-gray-200" />
+          <div className="cursor-pointer hover:text-gray-200">
+            <FaTruck {...{}} />
+          </div>
+        </Link>
+
+        {/* If you also want a link to a fully advanced search page */}
+        <Link href="/search" className="ml-4 text-white hover:underline">
+          Advanced Search
         </Link>
       </nav>
     </header>
